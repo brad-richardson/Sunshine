@@ -82,20 +82,8 @@ list(APPEND SUNSHINE_COMPILE_OPTIONS -Wall -Wno-missing-braces -Wno-maybe-uninit
 if(WIN32)
 	enable_language(RC)
 	set(CMAKE_RC_COMPILER windres)
-	file(
-		DOWNLOAD "https://github.com/TheElixZammuto/sunshine-prebuilt/releases/download/1.0.0/pre-compiled.zip" "${CMAKE_CURRENT_BINARY_DIR}/pre-compiled.zip"
-		TIMEOUT 60
-		EXPECTED_HASH SHA256=5d59986bd7f619eaaf82b2dd56b5127b747c9cbe8db61e3b898ff6b485298ed6)
-
-	file(ARCHIVE_EXTRACT
-		INPUT "${CMAKE_CURRENT_BINARY_DIR}/pre-compiled.zip"
-		DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/pre-compiled)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CURL_STATIC_LDFLAGS} ${CURL_STATIC_CFLAGS}")
-
-	if(NOT DEFINED SUNSHINE_PREPARED_BINARIES)
-		set(SUNSHINE_PREPARED_BINARIES "${CMAKE_CURRENT_BINARY_DIR}/pre-compiled/windows")
-	endif()
 
 	add_compile_definitions(SUNSHINE_PLATFORM="windows")
 	add_subdirectory(tools)  # This is temporary, only tools for Windows are needed, for now
@@ -127,22 +115,6 @@ if(WIN32)
 		libssl.a
 		libcrypto.a)
 
-	set(FFMPEG_INCLUDE_DIRS
-		${SUNSHINE_PREPARED_BINARIES}/include)
-	set(FFMPEG_LIBRARIES
-		${SUNSHINE_PREPARED_BINARIES}/lib/libavcodec.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libavdevice.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libavfilter.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libavformat.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libavutil.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libpostproc.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libswresample.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libswscale.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libx264.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libx265.a
-		${SUNSHINE_PREPARED_BINARIES}/lib/libhdr10plus.a
-		z lzma bcrypt libiconv.a)
-
 	list(PREPEND PLATFORM_LIBRARIES
 		libstdc++.a
 		libwinpthread.a
@@ -167,7 +139,6 @@ elseif(APPLE)
 	link_directories(/usr/local/lib)
 	ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
 
-	find_package(FFmpeg REQUIRED)
 	FIND_LIBRARY(APP_SERVICES_LIBRARY ApplicationServices )
 	FIND_LIBRARY(AV_FOUNDATION_LIBRARY AVFoundation )
 	FIND_LIBRARY(CORE_MEDIA_LIBRARY CoreMedia )
@@ -242,8 +213,6 @@ else()
 	else()
 		set(WAYLAND_FOUND OFF)
 	endif()
-
-	find_package(FFMPEG REQUIRED)
 
 	if(X11_FOUND)
 		add_compile_definitions(SUNSHINE_BUILD_X11)
@@ -404,6 +373,27 @@ set(SUNSHINE_TARGET_FILES
 
 set_source_files_properties(src/upnp.cpp PROPERTIES COMPILE_FLAGS -Wno-pedantic)
 
+# Pre-compiled binaries
+if(WIN32)
+	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-windows-x86_64")
+	# TODO - verify which are needed here
+	set(FFMPEG_PLATFORM_LIBRARIES mfplat ole32 strmiids mfuuid)
+elseif(APPLE)
+	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-macos-x86_64")
+else()
+	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-linux-x86_64")
+endif()
+set(FFMPEG_INCLUDE_DIRS
+	${FFMPEG_PREPARED_BINARIES}/include)
+set(FFMPEG_LIBRARIES
+	${FFMPEG_PREPARED_BINARIES}/lib/libavcodec.a
+	${FFMPEG_PREPARED_BINARIES}/lib/libavutil.a
+	${FFMPEG_PREPARED_BINARIES}/lib/libswscale.a
+	${FFMPEG_PREPARED_BINARIES}/lib/libx264.a
+	${FFMPEG_PREPARED_BINARIES}/lib/libx265.a
+	${FFMPEG_PREPARED_BINARIES}/lib/libhdr10plus.a
+	${FFMPEG_PLATFORM_LIBRARIES})
+
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/third-party
@@ -442,7 +432,6 @@ else()
 	set(SUNSHINE_ASSETS_DIR_DEF "${SUNSHINE_ASSETS_DIR}")
 endif()
 list(APPEND SUNSHINE_DEFINITIONS SUNSHINE_ASSETS_DIR="${SUNSHINE_ASSETS_DIR_DEF}")
-
 
 list(APPEND CBS_EXTERNAL_LIBRARIES
 	cbs)
