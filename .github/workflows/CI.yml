@@ -379,8 +379,8 @@ jobs:
           sudo apt-get install -y \
             build-essential \
             cmake \
-            gcc-10 \
-            g++-10 \
+            gcc-11 \
+            g++-11 \
             libavdevice-dev \
             libboost-filesystem-dev \
             libboost-log-dev \
@@ -389,9 +389,12 @@ jobs:
             libcurl4-openssl-dev \
             libdrm-dev \
             libevdev-dev \
+            libfuse2 \
             libpulse-dev \
             libopus-dev \
             libssl-dev \
+            libva-dev \
+            libvdpau-dev \
             libwayland-dev \
             libx11-dev \
             libxcb-shm0-dev \
@@ -418,7 +421,7 @@ jobs:
 
           # Update gcc alias
           sudo update-alternatives --install \
-            /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+            /usr/bin/gcc gcc /usr/bin/gcc-11 110 --slave /usr/bin/g++ g++ /usr/bin/g++-11
 
           # Install CuDA
           sudo wget \
