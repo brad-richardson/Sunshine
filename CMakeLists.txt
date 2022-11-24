@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.0)
 
 project(Sunshine VERSION 0.15.0
 		DESCRIPTION "Sunshine is a Gamestream host for Moonlight."
@@ -143,8 +143,8 @@ elseif(APPLE)
 	FIND_LIBRARY(AV_FOUNDATION_LIBRARY AVFoundation )
 	FIND_LIBRARY(CORE_MEDIA_LIBRARY CoreMedia )
 	FIND_LIBRARY(CORE_VIDEO_LIBRARY CoreVideo )
-	FIND_LIBRARY(FOUNDATION_LIBRARY Foundation )
 	FIND_LIBRARY(VIDEO_TOOLBOX_LIBRARY VideoToolbox )
+	FIND_LIBRARY(FOUNDATION_LIBRARY Foundation )
 	list(APPEND SUNSHINE_EXTERNAL_LIBRARIES
 		${APP_SERVICES_LIBRARY}
 		${AV_FOUNDATION_LIBRARY}
@@ -177,9 +177,6 @@ elseif(APPLE)
 		${APPLE_PLIST_FILE})
 else()
 	add_compile_definitions(SUNSHINE_PLATFORM="linux")
-
-	set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-	set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 
 	option(SUNSHINE_ENABLE_DRM "Enable KMS grab if available" ON)
 	option(SUNSHINE_ENABLE_X11 "Enable X11 grab if available" ON)
@@ -313,7 +310,6 @@ else()
 		evdev
 		pulse
 		pulse-simple
-		Threads::Threads
 		)
 
 	include_directories(
@@ -387,7 +383,7 @@ elseif(APPLE)
 	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-macos-x86_64")
 else()
 	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-linux-x86_64")
-	set(FFMPEG_PLATFORM_LIBRARIES mvec m va va-drm va-x11 vdpau X11)
+	set(FFMPEG_PLATFORM_LIBRARIES va va-drm va-x11 vdpau X11)
 endif()
 set(FFMPEG_INCLUDE_DIRS
 	${FFMPEG_PREPARED_BINARIES}/include)
@@ -438,6 +434,7 @@ else()
 	set(SUNSHINE_ASSETS_DIR_DEF "${SUNSHINE_ASSETS_DIR}")
 endif()
 list(APPEND SUNSHINE_DEFINITIONS SUNSHINE_ASSETS_DIR="${SUNSHINE_ASSETS_DIR_DEF}")
+
 
 list(APPEND CBS_EXTERNAL_LIBRARIES
 	cbs)
@@ -653,8 +650,8 @@ elseif(UNIX)
 
 		# Dependencies
 		set(CPACK_DEB_COMPONENT_INSTALL ON)
-		set(CPACK_DEBIAN_PACKAGE_DEPENDS "openssl, libavdevice58, libboost-thread1.67.0 | libboost-thread1.71.0 | libboost-thread1.74.0, libboost-filesystem1.67.0 | libboost-filesystem1.71.0 | libboost-filesystem1.74.0, libboost-log1.67.0 | libboost-log1.71.0 | libboost-log1.74.0, libcurl4, libpulse0, libopus0, libxcb-shm0, libxcb-xfixes0, libxtst6, libevdev2, libdrm2, libcap2")
-		set(CPACK_RPM_PACKAGE_REQUIRES "openssl >= 1.1, libavdevice >= 4.3, boost-thread >= 1.67.0, boost-filesystem >= 1.67.0, boost-log >= 1.67.0, libcurl >= 7.0, pulseaudio-libs >= 10.0, libopusenc >= 0.2.1, libxcb >= 1.13, libXtst >= 1.2.3, libevdev >= 1.5.6, libdrm >= 2.4.97, libcap >= 2.22")
+		set(CPACK_DEBIAN_PACKAGE_DEPENDS "openssl, libboost-thread1.67.0 | libboost-thread1.71.0 | libboost-thread1.74.0, libboost-filesystem1.67.0 | libboost-filesystem1.71.0 | libboost-filesystem1.74.0, libboost-log1.67.0 | libboost-log1.71.0 | libboost-log1.74.0, libcurl4, libpulse0, libopus0, libxcb-shm0, libxcb-xfixes0, libxtst6, libevdev2, libdrm2, libcap2")
+		set(CPACK_RPM_PACKAGE_REQUIRES "openssl >= 1.1, boost-thread >= 1.67.0, boost-filesystem >= 1.67.0, boost-log >= 1.67.0, libcurl >= 7.0, pulseaudio-libs >= 10.0, libopusenc >= 0.2.1, libxcb >= 1.13, libXtst >= 1.2.3, libevdev >= 1.5.6, libdrm >= 2.4.97, libcap >= 2.22")
 		set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS OFF)  # This should automatically figure out dependencies, doesn't work with the current config
 	endif()
 endif()
