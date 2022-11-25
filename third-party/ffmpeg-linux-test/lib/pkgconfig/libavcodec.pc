@@ -9,6 +9,6 @@ Version: 58.134.100
 Requires: libavutil >= 56.70.100
 Requires.private: 
 Conflicts:
-Libs: -L${libdir}  -lavcodec -pthread -lm -latomic -L/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib -lx264 -lpthread -lm -ldl -L/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib -lx265 -lstdc++ -lm -lgcc_s -lgcc -lgcc_s -lgcc -lrt -ldl -lva
+Libs: -L${libdir}  -lavcodec -pthread -lm -latomic -L/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib -lx264 -lpthread -lm -ldl -L/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib -lx265 -lstdc++ -lm -lgcc_s -lgcc -lgcc_s -lgcc -lrt -ldl -lva -ldl
 Libs.private: 
 Cflags: -I${includedir}
