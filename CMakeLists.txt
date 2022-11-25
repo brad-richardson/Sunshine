@@ -390,7 +390,7 @@ elseif(APPLE)
 	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-macos-x86_64")
 	# find_library(FFMPEG_PLATFORM_LIBRARIES NAMES iconv libiconv NAMES_PER_DIR PATH_SUFFIXES lib)
 else()
-	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-linux-x86_64")
+	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-linux-test")
 	set(FFMPEG_PLATFORM_LIBRARIES va va-drm va-x11 vdpau X11)
 endif()
 set(FFMPEG_INCLUDE_DIRS
