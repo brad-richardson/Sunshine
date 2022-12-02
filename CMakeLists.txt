@@ -308,6 +308,7 @@ else()
 	list(APPEND PLATFORM_LIBRARIES
 		dl
 		evdev
+		numa
 		pulse
 		pulse-simple
 		)
