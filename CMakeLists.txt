@@ -376,7 +376,6 @@ set(SUNSHINE_TARGET_FILES
 set_source_files_properties(src/upnp.cpp PROPERTIES COMPILE_FLAGS -Wno-pedantic)
 
 # Pre-compiled binaries
-set(HDR10_PLUS ON)
 if(WIN32)
 	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-windows-x86_64")
 	set(FFMPEG_PLATFORM_LIBRARIES mfplat ole32 strmiids mfuuid)
@@ -384,10 +383,9 @@ elseif(APPLE)
 	set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-macos-x86_64")
 else()
 	MESSAGE("CMAKE_SYSTEM_PROCESSOR")
-	MESSAGE($CMAKE_SYSTEM_PROCESSOR)
+	MESSAGE("$CMAKE_SYSTEM_PROCESSOR")
 	if (CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
 		set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-linux-aarch64")
-		set(HDR10_PLUS OFF)
 	else()
 		set(FFMPEG_PREPARED_BINARIES "${CMAKE_CURRENT_SOURCE_DIR}/third-party/ffmpeg-linux-x86_64")
 	endif()
@@ -395,18 +393,18 @@ else()
 endif()
 set(FFMPEG_INCLUDE_DIRS
 	${FFMPEG_PREPARED_BINARIES}/include)
+if(EXISTS ${FFMPEG_PREPARED_BINARIES}/lib/libhdr10plus.a)
+	set(HDR10_PLUS_LIBRARY
+		${FFMPEG_PREPARED_BINARIES}/lib/libhdr10plus.a)
+endif()
 set(FFMPEG_LIBRARIES
 	${FFMPEG_PREPARED_BINARIES}/lib/libavcodec.a
 	${FFMPEG_PREPARED_BINARIES}/lib/libavutil.a
 	${FFMPEG_PREPARED_BINARIES}/lib/libswscale.a
 	${FFMPEG_PREPARED_BINARIES}/lib/libx264.a
 	${FFMPEG_PREPARED_BINARIES}/lib/libx265.a
+	${HDR10_PLUS_LIBRARY}
 	${FFMPEG_PLATFORM_LIBRARIES})
-
-if(HDR10_PLUS)
-	list(APPEND FFMPEG_LIBRARIES 
-		${FFMPEG_PREPARED_BINARIES}/lib/libhdr10plus.a)
-endif()
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
