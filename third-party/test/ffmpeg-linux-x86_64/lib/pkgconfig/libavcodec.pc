@@ -1,7 +1,7 @@
-prefix=/home/runner/work/build-deps/build-deps/ffmpeg_build
+prefix=/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build
 exec_prefix=${prefix}
-libdir=/home/runner/work/build-deps/build-deps/ffmpeg_build/lib
-includedir=/home/runner/work/build-deps/build-deps/ffmpeg_build/include
+libdir=/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib
+includedir=/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/include
 
 Name: libavcodec
 Description: FFmpeg codec library
@@ -9,6 +9,6 @@ Version: 59.37.100
 Requires: libavutil >= 57.28.100
 Requires.private: 
 Conflicts:
-Libs: -L${libdir}  -lavcodec -pthread -lm -latomic -L/home/runner/work/build-deps/build-deps/ffmpeg_build/lib -lx264 -lpthread -lm -ldl -L/home/runner/work/build-deps/build-deps/ffmpeg_build/lib -lx265 -lstdc++ -lm -lgcc_s -lgcc -lgcc_s -lgcc -lrt -ldl -lnuma -lva -ldl
+Libs: -L${libdir}  -lavcodec -pthread -lm -latomic -L/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib -lx264 -lpthread -lm -ldl -L/home/runner/work/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib -lx265 -lstdc++ -lm -lgcc_s -lgcc -lgcc_s -lgcc -lrt -ldl -lnuma -lva -ldl
 Libs.private: 
 Cflags: -I${includedir}

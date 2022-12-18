@@ -1,7 +1,7 @@
-prefix=/d/a/build-deps/build-deps/ffmpeg_build
+prefix=/d/a/sunshine-build-deps/sunshine-build-deps/ffmpeg_build
 exec_prefix=${prefix}
-libdir=/d/a/build-deps/build-deps/ffmpeg_build/lib
-includedir=/d/a/build-deps/build-deps/ffmpeg_build/include
+libdir=/d/a/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/lib
+includedir=/d/a/sunshine-build-deps/sunshine-build-deps/ffmpeg_build/include
 
 Name: libswscale
 Description: FFmpeg image rescaling library
