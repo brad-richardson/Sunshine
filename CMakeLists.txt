@@ -68,7 +68,7 @@ pkg_check_modules (CURL REQUIRED libcurl)
 if(NOT APPLE)
 	set(Boost_USE_STATIC_LIBS ON)
 endif()
-find_package(Boost COMPONENTS log log_setup filesystem REQUIRED)
+find_package(Boost COMPONENTS log_setup log filesystem REQUIRED)
 
 list(APPEND SUNSHINE_COMPILE_OPTIONS -Wall -Wno-missing-braces -Wno-maybe-uninitialized -Wno-sign-compare)
 
@@ -453,6 +453,8 @@ list(APPEND SUNSHINE_EXTERNAL_LIBRARIES
 		enet
 		opus
 		${FFMPEG_LIBRARIES}
+		${Boost_LOG_SETUP_LIBRARY}
+		${Boost_LOG_LIBRARY}
 		${Boost_LIBRARIES}
 		${OPENSSL_LIBRARIES}
 		${CURL_LIBRARIES}
