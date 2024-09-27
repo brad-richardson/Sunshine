@@ -31,11 +31,12 @@ post-fetch {
     system -W ${worksrcpath} "${git.cmd} submodule update --init --recursive"
 }
 
-depends_lib              port:avahi \
-                         port:curl \
-                         port:libopus \
+depends_lib              port:avahi+universal \
+                         port:boost180+universal \
+                         port:curl+universal \
+                         port:libopus+universal \
                          port:npm9 \
-                         port:pkgconfig
+                         port:pkgconfig+universal
 
 boost.version            1.80
 

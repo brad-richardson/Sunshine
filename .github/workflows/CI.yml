@@ -825,9 +825,8 @@ jobs:
 
       - name: Package
         run: |
-          # create packages
-          sudo port pkg sunshine
-          sudo port dmg sunshine
+          # create package
+          sudo port mpkg sunshine
 
           work=$(port work sunshine)
           echo "Sunshine port work directory: ${work}"
@@ -837,7 +836,6 @@ jobs:
 
           # copy artifacts
           sudo mv ${work}/Sunshine*.pkg ./artifacts/sunshine.pkg
-          sudo mv ${work}/Sunshine*.dmg ./artifacts/sunshine.dmg
 
           # move components back
           # sudo mv /tmp/Sunshine*component.pkg ${work}/
